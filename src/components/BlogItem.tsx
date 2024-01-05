@@ -1,5 +1,5 @@
 // src/components/BlogItem.tsx
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import Article from '../interfaces/articles';
 import DeleteButton from './DeleteButton';
@@ -10,16 +10,30 @@ interface BlogItemProps {
 }
 
 const BlogItem: React.FC<BlogItemProps> = ({ article, onDelete }) => {
+    const [likes, setLikes] = useState(0);
+    const [dislikes, setDislikes] = useState(0);
+
+    const handleLike = () => {
+        setLikes(likes + 1);
+    };
+
+    const handleDislike = () => {
+        setDislikes(dislikes + 1);
+    };
+
     return (
-        <li>
+        <div>
             <h3>{article.title}</h3>
             <p>{article.content}</p>
             <p>Author: {article.author}</p>
             <p>Category: {article.category}</p>
-            <p>Created at: {article.createdAt}</p>
-            <DeleteButton onClick={() => onDelete(article.id)} />
-            <Link to={`/article/${article.id}`}>View Details</Link>
-        </li>
+            <p>Likes: {likes}</p>
+            <p>Dislikes: {dislikes}</p>
+            <button onClick={handleLike}>Like</button>
+            <button onClick={handleDislike}>Dislike</button>
+            <Link to={`/article/${article.id}`}>Read more</Link>
+            <button onClick={() => onDelete(article.id)}>Delete</button>
+        </div>
     );
 };
 

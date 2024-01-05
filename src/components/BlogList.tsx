@@ -42,10 +42,7 @@ const BlogList: React.FC<BlogListProps> = ({ articles }) => {
                             <div>
                                 <ul>
                                     {blogArticles.map((article) => (
-                                        <div key={article.id}>
-                                            <BlogItem article={article} onDelete={handleDelete} />
-                                            <Link to={`/edit-article/${article.id}`}>Edit</Link>
-                                        </div>
+                                        <BlogItem key={article.id} article={article} onDelete={handleDelete} />
                                     ))}
                                 </ul>
                                 <Link to="/create-article">Add Article</Link>
