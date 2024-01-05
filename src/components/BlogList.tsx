@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BlogItem from './BlogItem';
 import ArticleDetail from './ArtilcleDetail';
 import CreateArticle from './CreatePost';
-import Article from '../interfaces/articles';
+import EditArticle from './EditArticle'; // Додайте імпорт нового компонента
+import  Article  from '../interfaces/articles';
 
 interface BlogListProps {
     articles: Article[];
@@ -22,6 +23,13 @@ const BlogList: React.FC<BlogListProps> = ({ articles }) => {
         setBlogArticles([...blogArticles, newArticle]);
     };
 
+    const handleArticleUpdated = (updatedArticle: Article) => {
+        const updatedArticles = blogArticles.map(article =>
+            article.id === updatedArticle.id ? updatedArticle : article
+        );
+        setBlogArticles(updatedArticles);
+    };
+
     return (
         <Router>
             <div>
@@ -34,7 +42,10 @@ const BlogList: React.FC<BlogListProps> = ({ articles }) => {
                             <div>
                                 <ul>
                                     {blogArticles.map((article) => (
-                                        <BlogItem key={article.id} article={article} onDelete={handleDelete} />
+                                        <div key={article.id}>
+                                            <BlogItem article={article} onDelete={handleDelete} />
+                                            <Link to={`/edit-article/${article.id}`}>Edit</Link>
+                                        </div>
                                     ))}
                                 </ul>
                                 <Link to="/create-article">Add Article</Link>
@@ -48,6 +59,10 @@ const BlogList: React.FC<BlogListProps> = ({ articles }) => {
                     <Route
                         path="/create-article"
                         element={<CreateArticle onArticleCreated={handleArticleCreated} />}
+                    />
+                    <Route
+                        path="/edit-article/:articleId"
+                        element={<EditArticle articles={blogArticles} onArticleUpdated={handleArticleUpdated} />}
                     />
                 </Routes>
             </div>
